@@ -54,7 +54,7 @@ def capture_and_upload():
         send_btn.click()
         print(" Prompt sent via button.")
 
-        time.sleep(120)            # wait for ChatGPT to register the file
+        time.sleep(90)            # wait for ChatGPT to register the file
         print("Wait")
         img_element = WebDriverWait(driver, 100000000).until(
             EC.presence_of_element_located((By.CSS_SELECTOR, "img[alt=\"Generated image\"]"))
@@ -76,8 +76,6 @@ if __name__ == "__main__":
     print("Warming up for 30 s…")
     try:
         capture_and_upload()
-        print(" Sleeping 30 s…\n")
-        time.sleep(30)
     except KeyboardInterrupt:
         print("Stopped by user.")
     finally:
