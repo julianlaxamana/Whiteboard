@@ -1,4 +1,6 @@
 You must : pip install opencv-python selenium
+source venv/bin/activate
+python upload_bot.py
 
 
 Use 2 terminals:
