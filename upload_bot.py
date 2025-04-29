@@ -1,5 +1,6 @@
 import os, time, cv2
 
+import requests
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
@@ -52,18 +53,31 @@ def capture_and_upload():
         )
         send_btn.click()
         print(" Prompt sent via button.")
+
+        time.sleep(120)            # wait for ChatGPT to register the file
+        print("Wait")
+        img_element = WebDriverWait(driver, 100000000).until(
+            EC.presence_of_element_located((By.CSS_SELECTOR, "img[alt=\"Generated image\"]"))
+        )
+        img_url = img_element.get_attribute("src")
+
+        # Download the image using requests
+        img_data = requests.get(img_url).content
+        print(img_data)
+        with open("downloaded_image.jpg", "wb") as f:
+            f.write(img_data)
+
+        print("Image Written")
     except Exception:
         chat_box.send_keys(Keys.ENTER)
         print(" Prompt sent via ENTER key.")
 
 if __name__ == "__main__":
     print("Warming up for 30 s…")
-    time.sleep(30)
     try:
-        while True:
-            capture_and_upload()
-            print(" Sleeping 30 s…\n")
-            time.sleep(30)
+        capture_and_upload()
+        print(" Sleeping 30 s…\n")
+        time.sleep(30)
     except KeyboardInterrupt:
         print("Stopped by user.")
     finally:
